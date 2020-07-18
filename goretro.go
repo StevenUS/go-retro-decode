@@ -23,53 +23,56 @@ func main() {
         words = append(words, word)
     }
 
-
+    // [
+    //     [
+    //         [d i z]
+    //         [m s]
+    //     ] ...
     possibleWords := make([][][]string, 0)
     for _, word := range words {
        possibleWords = append(possibleWords, getPossibleWords(word))
     }
     fmt.Println(possibleWords)
 
-    // possibleWords := make([]map[int][]string, 0)
-    // for _, word := range words {
-    //    possibleWords = append(possibleWords, getPossibleWords(word))
-    // }
-    //
-    // for _, possibleWord := range possibleWords {
-    //
-    //     // [['t', 'x']
-    //     // ['t', 'h', 'a']
-    //     // ['e', 'n']]
-    //     listOfLettersLists := make([][]string, 0, len(possibleWord))
-    //
-    //     for _, letters := range possibleWord {
-    //
-    //         listOfLettersLists = append(listOfLettersLists, letters)
-    //     }
-    //
-    //     fmt.Println(listOfLettersLists)
-    //     // for _, letterList := range listOfLettersLists {
-    //     //     getPermutations(letterList)
-    //     // }
-    //
-    //
-    // }
-    //
-     fmt.Println(time.Since(start))
+    permutations := make([][]string, 0)
+    for _, lettersList := range possibleWords {
+        permutations = append(permutations, getPermutations(lettersList))
+    }
+
+    fmt.Println(permutations)
+
+    fmt.Println(time.Since(start))
+}
+
+// accepts a slice of slices of letters which represents a possible word
+// the 0 index of the main slice is all of the possible characters of the first
+// letter of the word
+func getPermutations(lettersList [][]string) []string  {
+    var words []string
+    for i, letters := range lettersList {
+        if (i == 0) {
+            words = letters
+        } else {
+            newWords := make([]string, 0)
+            for _, letter := range letters {
+                for _, word := range words {
+                    newWords = append(newWords, word + letter)
+                }
+            }
+            words = newWords
+        }
+    }
+    return words
 }
 
 func getLetters(letter string) []string {
     var letters []string
     for i, c := range CYPHER {
         if string(c) == letter {
-            letters = append(letters, getLetter(i))
+            letters = append(letters, string(ALPHA[i]))
         }
     }
     return letters
-}
-
-func getLetter(idx int) string {
-    return string(ALPHA[idx])
 }
 
 func getPossibleWords(cypheredWord string) [][]string {
@@ -93,20 +96,4 @@ func getPossibleWords(cypheredWord string) [][]string {
     return possibleWords
 }
 
-// func getPermutations(letters [][]string) {
-//     var words []string
-//     for i, letter := range letters {
-//         if i == 0 {
-//             words = []string{letter}
-//         } else {
-//             var newWords = make([]string,0)
-//             for _, word := range words {
-//                 newWords = append(newWords, word)
-//             }
-//
-//         }
-//     }
-//     fmt.Println(words)
-
-// }
 
