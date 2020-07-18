@@ -23,35 +23,42 @@ func main() {
         words = append(words, word)
     }
 
-    possibleWords := make([]map[int][]string, 0)
+
+    possibleWords := make([][][]string, 0)
     for _, word := range words {
        possibleWords = append(possibleWords, getPossibleWords(word))
     }
+    fmt.Println(possibleWords)
 
-    for _, possibleWord := range possibleWords {
-
-        // [['t', 'x']
-        // ['t', 'h', 'a']
-        // ['e', 'n']]
-        listOfLettersLists := make([][]string, 0, len(possibleWord))
-
-        for _, letters := range possibleWord {
-
-            listOfLettersLists = append(listOfLettersLists, letters)
-        }
-
-        fmt.Println(listOfLettersLists)
-        // for _, letterList := range listOfLettersLists {
-        //     getPermutations(letterList)
-        // }
-
-
-    }
-
+    // possibleWords := make([]map[int][]string, 0)
+    // for _, word := range words {
+    //    possibleWords = append(possibleWords, getPossibleWords(word))
+    // }
+    //
+    // for _, possibleWord := range possibleWords {
+    //
+    //     // [['t', 'x']
+    //     // ['t', 'h', 'a']
+    //     // ['e', 'n']]
+    //     listOfLettersLists := make([][]string, 0, len(possibleWord))
+    //
+    //     for _, letters := range possibleWord {
+    //
+    //         listOfLettersLists = append(listOfLettersLists, letters)
+    //     }
+    //
+    //     fmt.Println(listOfLettersLists)
+    //     // for _, letterList := range listOfLettersLists {
+    //     //     getPermutations(letterList)
+    //     // }
+    //
+    //
+    // }
+    //
      fmt.Println(time.Since(start))
 }
 
-func getAlphaIndicies(letter string) []string {
+func getLetters(letter string) []string {
     var letters []string
     for i, c := range CYPHER {
         if string(c) == letter {
@@ -65,27 +72,16 @@ func getLetter(idx int) string {
     return string(ALPHA[idx])
 }
 
-
-
-// ex output: "is there"
-// { '0': [ 'd', 'i', 'z' ], '1': [ 'm', 's' ] }
-// {
-//   '0': [ 'b', 'f', 'q', 't' ],
-//   '1': [ 'h', 'u' ],
-//   '2': [ 'e', 'y' ],
-//   '3': [ 'r' ],
-//   '4': [ 'e', 'y' ]
-// }
-func getPossibleWords(cypheredWord string) map[int][]string {
-    possibleWords := make(map[int][]string)
+func getPossibleWords(cypheredWord string) [][]string {
+    possibleWords := make([][]string, 0)
     for curIdx, letter := range cypheredWord {
-        letters := getAlphaIndicies(string(letter))
+        letters := getLetters(string(letter))
         for _, letter := range letters {
-            if val, ok := possibleWords[curIdx]; ok {
-                possibleWords[curIdx] = append(val, letter)
+            if len(possibleWords) > curIdx {
+                possibleWords[curIdx] = append(possibleWords[curIdx], letter)
 
             } else {
-                possibleWords[curIdx] = []string{letter}
+                possibleWords = append(possibleWords, []string{letter})
             }
         }
     }
@@ -111,6 +107,6 @@ func getPossibleWords(cypheredWord string) map[int][]string {
 //         }
 //     }
 //     fmt.Println(words)
-//
+
 // }
 
