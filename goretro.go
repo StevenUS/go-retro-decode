@@ -19,7 +19,7 @@ type PossibleWord struct {
 
 type WordSet map[string]struct{}
 
-func getEnglishWords() map[string]bool {
+func getEnglishWordsFromFile() map[string]bool {
     start := time.Now()
 
     words := make(map[string]bool)
@@ -50,7 +50,7 @@ func getEnglishWords() map[string]bool {
 }
 
 func main() {
-    englishWords := getEnglishWords()
+    englishWords := getEnglishWordsFromFile()
     start := time.Now()
     var text = "zf ghyby x wxy gw hxvy x fzckly fcbzlg ghxg cwcgzkhbyf ywhb lwcxl gxckycz? (fybvyb.xfl, ycv vxbf, lwcxl.lbwlybgzyf, wbycch.lbwlybgzyf ygc.)"
 
@@ -68,14 +68,11 @@ func main() {
     for _, word := range words {
        possibleWords = append(possibleWords, getPossibleWords(word))
     }
-    fmt.Println(possibleWords)
 
     permutationLists := make([][]string, 0)
     for _, lettersList := range possibleWords {
         permutationLists = append(permutationLists, getPermutations(lettersList))
     }
-
-    // fmt.Println(permutationLists)
 
     getAcutalWords(englishWords, permutationLists)
 
@@ -84,15 +81,16 @@ func main() {
 
 func getAcutalWords(englishWords map[string]bool, permutationLists [][]string) {
 
-    actualWords := make(map[int][]string)
+    actualWords := make([][]string, 0)
     for i, permutations := range permutationLists {
         for _, permutation := range permutations {
 
             if (englishWords[permutation]) {
-                if _, ok := actualWords[i]; ok {
+                // if _, ok := actualWords[i]; ok {
+                if len(actualWords) > i {
                     actualWords[i] = append(actualWords[i], string(permutation))
                 } else {
-                    actualWords[i] = []string{string(permutation)}
+                    actualWords = append(actualWords, []string{string(permutation)})
                 }
 
             }
@@ -100,10 +98,9 @@ func getAcutalWords(englishWords map[string]bool, permutationLists [][]string) {
         }
     }
 
-    if true {
-        for key, value := range actualWords {
-            fmt.Println("Key:", key, "Value:", value)
-        }
+
+    for _, list := range actualWords {
+        fmt.Println(list)
     }
 }
 
@@ -151,11 +148,7 @@ func getPossibleWords(cypheredWord string) [][]string {
             }
         }
     }
-    if false {
-        for key, value := range possibleWords {
-            fmt.Println("Key:", key, "Value:", value)
-        }
-    }
+    // fmt.Println(possibleWords)
     return possibleWords
 }
 
