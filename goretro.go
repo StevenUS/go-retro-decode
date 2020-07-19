@@ -2,8 +2,11 @@ package main
 
 import (
     "fmt"
+    "log"
     "strings"
     "time"
+    "bufio"
+    "os"
 )
 
 var ALPHA =  "abcdefghijklmnopqrstuvwxyz";
@@ -14,7 +17,40 @@ type PossibleWord struct {
     possibleLetters []string
 }
 
+type WordSet map[string]struct{}
+
+func getEnglishWords() map[string]bool {
+    start := time.Now()
+
+    words := make(map[string]bool)
+
+    if words["test"] {
+        fmt.Println("success")
+    }
+
+    file, err := os.Open("../go-words/english-words/words_alpha.txt")
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer file.Close()
+
+    scanner := bufio.NewScanner(file)
+    for scanner.Scan() {
+        words[scanner.Text()] = true
+    }
+
+    if err := scanner.Err(); err != nil {
+        log.Fatal(err)
+    }
+
+    fmt.Println("upload words to map: ", time.Since(start))
+
+    return words
+
+}
+
 func main() {
+    englishWords := getEnglishWords()
     start := time.Now()
     var text = "zf ghyby x wxy gw hxvy x fzckly fcbzlg ghxg cwcgzkhbyf ywhb lwcxl gxckycz? (fybvyb.xfl, ycv vxbf, lwcxl.lbwlybgzyf, wbycch.lbwlybgzyf ygc.)"
 
@@ -34,14 +70,41 @@ func main() {
     }
     fmt.Println(possibleWords)
 
-    permutations := make([][]string, 0)
+    permutationLists := make([][]string, 0)
     for _, lettersList := range possibleWords {
-        permutations = append(permutations, getPermutations(lettersList))
+        permutationLists = append(permutationLists, getPermutations(lettersList))
     }
 
-    fmt.Println(permutations)
+    // fmt.Println(permutationLists)
+
+    getAcutalWords(englishWords, permutationLists)
 
     fmt.Println(time.Since(start))
+}
+
+func getAcutalWords(englishWords map[string]bool, permutationLists [][]string) {
+
+    actualWords := make(map[int][]string)
+    for i, permutations := range permutationLists {
+        for _, permutation := range permutations {
+
+            if (englishWords[permutation]) {
+                if _, ok := actualWords[i]; ok {
+                    actualWords[i] = append(actualWords[i], string(permutation))
+                } else {
+                    actualWords[i] = []string{string(permutation)}
+                }
+
+            }
+
+        }
+    }
+
+    if true {
+        for key, value := range actualWords {
+            fmt.Println("Key:", key, "Value:", value)
+        }
+    }
 }
 
 // accepts a slice of slices of letters which represents a possible word
