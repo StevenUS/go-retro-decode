@@ -9,8 +9,8 @@ import (
     "os"
 )
 
-var ALPHA =  "abcdefghijklmnopqrstuvwxyz";
-var CYPHER = "xgczygkhzjklfcwlgbfghvwxyz";
+var ALPHA =  "abcdefghijklmnopqrstuvwxyz"
+var CYPHER = "xgczygkhzjklfcwlgbfghvwxyz"
 var ENGLISH_WORDS = make(map[string]bool)
 
 func getEnglishWordsFromFile() map[string]bool {
@@ -44,7 +44,42 @@ func main() {
 
     start := time.Now()
 
-    var text = "zg ghy fcwly wg x gxfk chxckyf, wy fhwhlz byfcwly xcz fxky fhby ghy byghzbyfycgf xby hlzxgyz clyxbly zc ghy gzckyg fw yvybywcy zf wc ghy fxfy lxky wzgh ghy kwxlf xcz hww gw xchzyvy ghyf."
+    // var text = "zg ghy fcwly wg x gxfk chxckyf, wy fhwhlz byfcwly xcz fxky fhby ghy byghzbyfycgf xby hlzxgyz clyxbly zc ghy gzckyg fw yvybywcy zf wc ghy fxfy lxky wzgh ghy kwxlf xcz hww gw xchzyvy ghyf."
+    // text = "gww fxcy zzggybycg gbxcchyf wc zyv fybvyb"
+    // text = "cwffhczcxgzwc gygwyyc zczzx xcz hf gyxf xgwhg hlcwfzck gyxghby bylyxfyf xcz ghyzb zylyczycczyf. z hxz gw bywbzgy ghy ycgzby 3bz fhzg gyxghby fzccy z wbwgy zg gwb ghwgy glww ghg jxckzy fwzzgzyz gw hfy byghbczck-hfyb glww. ghzf zylxyyz ghy bylyxfy gy fwby ghxc x wyyk"
+
+    texts := []string{
+        "wc gwxbzzck ghy zczzx gyxf wzgh ghy bylyxfy lbwcyff gy jxckzy xcz yzzzy",
+        "gyxf. 2 cyw fyfgybf jhfg jwzcyz, 2 fwby cyxg fwczxy",
+        "gzckygf xby fwvzck byxlly gxfg",
+        "wc-gwxbzzck zwchfycgxgzwc.",
+        "glyyg hwfylxky bywwbk lwwkf kbyxg ",
+        "fcwly wg ghy gxfk fhwhlz hxvy gyyc cxlghbyz gygwby ghy yckzcyybzck zfllyfycgxgzwc (y.k. vyhzcly fylycgwb by-zyfzkc) ",
+        "gww-wyyk bylyxfy cycly gwb zczzx zf cwg hxllyczck xf llxccyz. fxy gy wy fhwhlz byvzfzg xcz fyy zg ghyby zf x gyggyb wxy gw hxvy llxccyz bylyxfyf. ",
+        "wzll gy hyllghl zg xll zylyczycczyf wg x gyxghby lzky gxckycz xcz gbwcgycz xby zwcy gbwf yzghyb ghy zczzx gyxf wb ghy hf gyxf cwfllygyly. zg gycwfyf zzggzchlg gw cwllxgwbxgy zc zzggybycg gzfy zwcyf. ",
+        "lwcxl xlllzcxgzwc fyghl gwb gx/zyv. ",
+        "zg'f kbyxg ghxg wy'by kbwwzck, ghg cxc wy kyg x gbxcflxbycg hzbzck/kbwwgh llxc yvyc zg zg'f jhfg gwb gwzxy xcz fxy chxcky? ",
+        "zw wy byxlly hxvy llxcf gw hlkbxzy xzfzc lzky fxfzb fycgzwcyz zhbzck ghy cwflxcy fyygzck? ",
+        "xckhlxbjf wzll cw lwckyb gy fhllwbgyz zc 2021. zw wy hxvy xcy llxcf gw hlkbxzy/fzkbxgy gych xll xcz xzfzc xll? ",
+        "gxz bwhcz wg zcgybvzywf ",
+        "cyyz zyvwlf, ghzlz gwx wc jyckzcf, xcz fwfywcy zyzzcxgyz gw fxzcgxzc jyckzcf jwgf xcz wghyb lbwcyffyf ",
+        "cwffhczcxgzwc gygwyyc zczzx xcz hf gyxf xgwhg hlcwfzck gyxghby bylyxfyf xcz ghyzb zylyczycczyf. z hxz gw bywbzgy ghy ycgzby 3bz fhzg gyxghby fzccy z wbwgy zg gwb ghwgy glww ghg jxckzy fwzzgzyz gw hfy byghbczck-hfyb glww. ghzf zylxyyz ghy bylyxfy gy fwby ghxc x wyyk ",
+        "xz- lbwzhcg gyxf- fhxby lbwzhcg byghzbyfycgf chycklzfg wzgh ghy yckzcyybzck gyxf xf wyll- ghyzb lhblwfy zf gw ycfhby ghy clxbzgy zf ghyby gygwby fgxbgzck x gzckyg ",
+        "xz- kbzfgz- zzfczllzcyz llxcczck fyffzwcf wzgh ghy zczzx gyxf (gzckyg kzck-wggf) ",
+        "xz- kbzfgz- lyxbc flbzcgf vzyw zc jzbx gwb zczzx gyxf ",
+        "xz- lbwzhcg gyxf (kbzfgz) gw lbzwbzgzzy zyv ghxlzgy wg lzgy gxfk- cwfllygyly xhgwfxgy ghy bylyxfy lbwcyff",
+    }
+
+    for _, text := range texts {
+        decypher(text)
+        fmt.Println("**************************************************************************")
+    }
+
+    // end of original js logic
+    fmt.Println(time.Since(start))
+}
+
+func decypher(text string) {
 
     var words []string
     for _, word := range strings.Fields(text) {
@@ -66,7 +101,8 @@ func main() {
         fmt.Println(list)
     }
 
-    fmt.Println(time.Since(start))
+    // end of original js logic
+    // fmt.Println(time.Since(start))
 }
 
 
@@ -100,6 +136,7 @@ func getPossibleWords(cypheredWord string) []string {
 // the 0 index of the slice is all of the possible characters of the first
 // letter of the word
 func getPermutations(lettersList []string) []string  {
+    // fmt.Println("letters: ", lettersList)
     var words []string
     for i, letters := range lettersList {
         if (i == 0) {
@@ -122,6 +159,7 @@ func getPermutations(lettersList []string) []string  {
             words = newWords
         }
     }
+    // fmt.Println("words: ", words)
     return words
 }
 
